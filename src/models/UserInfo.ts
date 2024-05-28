@@ -3,3 +3,9 @@ export default interface UserInfo {
     login: string;
     password?: string;
 }
+
+export const alias = {
+    'id': 'Идентификатор',
+    'login': 'Логин',
+    'password': 'Пароль',
+};

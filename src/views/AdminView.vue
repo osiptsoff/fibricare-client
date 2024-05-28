@@ -1,53 +1,43 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+    import { ref } from 'vue';
+    import NavigatedWrapper from '../components/NavigatedWrapper.vue';
+    import { useRoute } from 'vue-router';
 
-    const stubArr = ref<Array<{name: string, path: string, icon:string}>>( [
+    const route = useRoute();
+
+    const entries = ref( [
         {
-            name: 'Stub 1',
-            path: 'stub1',
-            icon: 'mdi-roman-numeral-1'
+            name: 'Врачи',
+            routeName: 'admin-doctors',
+            icon: 'mdi-doctor',
 
         },
         {
-            name: 'Stub 2',
-            path: 'stub2',
-            icon: 'mdi-roman-numeral-2'
-        },
+            name: 'Пациенты',
+            routeName: 'admin-patients',
+            icon: 'mdi-bed-empty',
+        }
     ]);
+
+    const isChildViewActive = () => {
+        return route.name === 'admin';
+    }
 </script>
 
 <template>
-    <v-sheet>
-        <v-navigation-drawer
-            expand-on-hover
-            rail
-        >
-            <v-list 
-                density="compact"
-                nav
-            >
-                <v-list-item 
-                    v-for="elem in stubArr"
-                    :title="elem.name"
-                    :prepend-icon="elem.icon"
-                    :to="elem.path"
-                >
-                </v-list-item>
-            </v-list>
-            <v-divider/>
-            <template v-slot:append>
-                <v-list
-                    density="compact"
-                    nav
-                >
-                    <v-list-item 
-                        @click="console.log('click')"
-                        title="Выйти"
-                        prepend-icon="mdi-logout"
-                    />
-                </v-list>
-            </template>
-        </v-navigation-drawer>
-        <router-view/>
-    </v-sheet>
+    <navigated-wrapper
+        :menuEntries="entries"
+    />
+
+    <v-card
+        v-if="isChildViewActive()"
+        class="ma-5 pa-5"
+    >
+        <v-card-title>
+            Здравствуйте, администратор!
+        </v-card-title>
+        <v-card-text>
+            Для начала работы перейдите по одному из пунктов меню слева.
+        </v-card-text>
+    </v-card>
 </template>

@@ -30,23 +30,35 @@ export const doctorApi = axios.create( {
     },
 })
 
-axios.interceptors.request.use((config) => {
-        config.headers.Authorization = `Bearer ${localStorage.getItem('accessToken')}`;
+const requestInterceptor = (config: any) => {
+    config.headers.Authorization = `Bearer ${localStorage.getItem('accessToken')}`;
+    return config;
+};
 
-        return config;
+const errorHandler = async (error: any) => {
+    const config = error.config;
+    if(error.response.status === HttpStatusCode.Unauthorized && !config._retry) {
+        config._retry = true;
+
+        const response = await authApi.get('/refresh');
+
+        localStorage.setItem('accessToken', response.data.token.value);
+        config.headers.Authorization = `Bearer ${localStorage.getItem('accessToken')}`;
+        
+        return axios(config);
     }
+    return Promise.reject(error);
+};
+
+personApi.interceptors.request.use(requestInterceptor);
+doctorApi.interceptors.request.use(requestInterceptor);
+
+personApi.interceptors.response.use(
+    (config) => config,
+    errorHandler
 )
 
-axios.interceptors.response.use(
+doctorApi.interceptors.response.use(
     (config) => config,
-    async (error) => {
-        const config = error.config;
-        if(error.response.status === HttpStatusCode.Unauthorized) {
-            const response = await authApi.get('/refresh');
-
-            localStorage.setItem('accessToken', response.data.token.value);
-            
-            return axios(config);
-        }
-    }
+    errorHandler
 )

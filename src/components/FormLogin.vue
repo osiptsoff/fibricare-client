@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { ref } from 'vue';
+    import { computed, ref } from 'vue';
 
     defineProps<{
         loading?: boolean
@@ -14,6 +14,13 @@
     const login = ref<string>('');
     const password = ref<string>('');
     const isFormValid = ref<boolean>(false);
+    const isPasswordHidden = ref<boolean>(true);
+    const passwordFieldType = computed<string>(
+        () => isPasswordHidden.value ? 'password' : 'text'
+    );
+    const passwordFieldHideIcon = computed<string>(
+        () => isPasswordHidden.value ? 'mdi-eye' : 'mdi-eye-off'
+    );
 </script>
 
 <template>
@@ -40,11 +47,13 @@
                 <v-col>
                     <v-text-field
                         v-model="password"
+                        @click:append-inner="isPasswordHidden = !isPasswordHidden"
                         :rules="[fieldNotEmpty]"
                         :readonly="loading"
+                        :type="passwordFieldType"
+                        :append-inner-icon="passwordFieldHideIcon"
                         label="Пароль"
                         placeholder="Введите пароль"
-                        type="password"
                         clearable
                     />
                 </v-col>
@@ -53,7 +62,7 @@
                 <v-col cols="5">
                     <v-btn
                         :disabled="!isFormValid"
-                        :loading="loading"Ы
+                        :loading="loading"
                         type="submit"
                         block
                     >

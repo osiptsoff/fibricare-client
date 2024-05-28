@@ -25,7 +25,6 @@ export const authenticate = async (auth: Auth) => {
 
         return null;
     } catch (error) {
-        console.log(HttpStatusCode.Forbidden)
         const err = error as AxiosError<ApiError>;
 
         if(err.response?.data.status === HttpStatusCode.Forbidden) {

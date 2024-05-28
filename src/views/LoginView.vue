@@ -17,7 +17,7 @@
         if(!!result) {
             errorText.value = result;
         } else {
-            router.replace('/');
+            router.replace({name: 'home'});
         }
 
         isFormLoading.value = false;

@@ -1,7 +1,24 @@
+<script setup lang="ts">
+    import { ref } from 'vue';
+    import NavigatedWrapper from '../components/NavigatedWrapper.vue';
+
+    const entries = ref( [
+        {
+            name: 'entry1',
+            routeName: 'home',
+            icon: 'mdi-doctor',
+
+        },
+        {
+            name: 'entry2',
+            routeName: 'home',
+            icon: 'mdi-bed-empty',
+        }
+    ]);
+</script>
+
 <template>
-    <v-card>
-        <v-card-title>
-            doctor
-        </v-card-title>
-    </v-card>
+    <navigated-wrapper
+        :menuEntries="entries"
+    />
 </template>
