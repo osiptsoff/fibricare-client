@@ -85,6 +85,9 @@ const useControls = <T extends IdBearing>( { getPage, remove, create, update}: A
         if(typeof pageResult != 'string') {
             page.value = pageResult.data;
             totalPages.value = pageResult.totalPages;
+            errorText.value = '';
+        } else {
+            errorText.value = pageResult;
         }
 
         isPageLoading.value = false;

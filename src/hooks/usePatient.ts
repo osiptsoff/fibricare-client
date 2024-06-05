@@ -1,10 +1,11 @@
 import { personApi } from "../api";
 import ErrorResolverChain from "../api/ErrorResolverChain";
 import Patient from "../models/Patient";
-import useCrud from "./useCrud";
+import useCrud from "./generic/useCrud";
+import usePageGetter from "./generic/usePageGetter";
 
-let pageSize: number = import.meta.env.VITE_ENTITIES_IN_PAGE;
-let endpoint: string = '/patient';
+const pageSize: number = import.meta.env.VITE_ENTITIES_IN_PAGE;
+const endpoint: string = '/patient';
 
 const patientCreateUpdateResolver = new ErrorResolverChain()
     .withResolver(e => e.status === 400 && !!e.message?.includes('doctor_id'),
@@ -34,7 +35,6 @@ const resolvers = {
 }
 
 const unpack = (obj: any): Patient => {
-    console.log(obj)
     return {
         name: obj.name,
         birthDate: obj.birthDate.split('T')[0],
@@ -43,14 +43,13 @@ const unpack = (obj: any): Patient => {
         snils: obj.snils,
         medcard: obj.medcard,
         omiPolicy: obj.omiPolicy,
-        sex: obj.sex,
+        sex: obj.sex == 1 ? 'М' : 'Ж',
         id: obj.userInfo.id,
         login: obj.userInfo.login,
     };
 };
 
 const pack = (obj: Patient) => {
-    console.log(obj)
     return {
         name: obj.name,
         birthDate: obj.birthDate,
@@ -59,7 +58,7 @@ const pack = (obj: Patient) => {
         snils: obj.snils,
         medcard: obj.medcard,
         omiPolicy: obj.omiPolicy,
-        sex: obj.sex,
+        sex: obj.sex == 'М' ? 1 : 2,
         userInfo: {
             id: obj.id,
             login: obj.login,
@@ -69,13 +68,21 @@ const pack = (obj: Patient) => {
 };
 
 const usePatient = () => {
-    const crud = useCrud<Patient>({
+    const args = {
         api: personApi,
         endpoint,
-        resolvers,
         packEntity: pack,
         unpackEntity: unpack,
+    };
+
+    const crud = useCrud<Patient>({
+        ...args,
+        resolvers
     });
+    const pageGetter = usePageGetter<Patient>({
+        ...args,
+        resolver: resolvers.getPageResolver,
+    }, 'of');
 
     return {
         create: crud.create,
@@ -83,6 +90,8 @@ const usePatient = () => {
         getOne: crud.getOne,
         update: crud.update,
         remove: crud.remove,
+        getPageByDoctorId: (doctorId: number, pageNumber: number) => 
+            pageGetter.getPage(doctorId, pageNumber, pageSize),
     };
 };
 

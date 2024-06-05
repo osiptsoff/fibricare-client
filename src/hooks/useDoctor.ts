@@ -1,10 +1,10 @@
 import { personApi } from "../api";
 import ErrorResolverChain from "../api/ErrorResolverChain";
 import Doctor from "../models/Doctor";
-import useCrud from "./useCrud";
+import useCrud from "./generic/useCrud";
 
-let pageSize: number = import.meta.env.VITE_ENTITIES_IN_PAGE;
-let endpoint: string = '/doctor';
+const pageSize: number = import.meta.env.VITE_ENTITIES_IN_PAGE;
+const endpoint: string = '/doctor';
 
 const doctorCreateUpdateResolver = new ErrorResolverChain()
     .withResolver(e => e.status === 400 && !!e.message?.includes('login'),

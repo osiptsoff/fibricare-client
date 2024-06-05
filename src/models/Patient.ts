@@ -1,5 +1,5 @@
 import UserInfo from "./UserInfo";
-import { alias as infoAlias } from "./UserInfo";
+import { alias as infoAlias, fields as infoFields } from "./UserInfo";
 
 export default interface Patient extends UserInfo {
     name: string;
@@ -9,7 +9,7 @@ export default interface Patient extends UserInfo {
     snils: number;
     medcard: number;
     omiPolicy: number;
-    sex: number;
+    sex: string;
 };
 
 export const alias = {
@@ -25,14 +25,7 @@ export const alias = {
 };
 
 export const fields = [
-    {
-        fieldName: 'login',
-        fieldType: 'string' as const,
-    },
-    {
-        fieldName: 'password',
-        fieldType: 'string' as const,
-    },
+    ...infoFields,
     {
         fieldName: 'name',
         fieldType: 'string' as const,
@@ -52,23 +45,31 @@ export const fields = [
     {
         fieldName: 'doctorId',
         fieldType: 'number' as const,
+        validator: (val: string) => /^[0-9]+$/.test(val)
+            || 'Введите корректное целое число',
     },
     {
         fieldName: 'snils',
         fieldType: 'number' as const,
+        validator: (val: string) => /^[0-9]+$/.test(val)
+            || 'Введите корректное целое число',
     },
     {
         fieldName: 'medcard',
         fieldType: 'number' as const,
+        validator: (val: string) => /^[0-9]+$/.test(val)
+            || 'Введите корректное целое число',
     },
     {
         fieldName: 'omiPolicy',
         fieldType: 'number' as const,
+        validator: (val: string) => /^[0-9]+$/.test(val)
+            || 'Введите корректное целое число',
     },
     {
-        fieldName: 'sex',
+        fieldName: 'string',
         fieldType: 'number' as const,
-        validator: (val: string) => /^[12]$/.test(val)
-            || '1 - мужской, 2 - женский',
+        validator: (val: string) => /^[МмЖжы]$/.test(val)
+            || 'М - мужской, Ж - женский',
     },
 ];

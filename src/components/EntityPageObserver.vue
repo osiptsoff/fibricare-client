@@ -6,6 +6,7 @@
         entities: Array<object>,
         idProps: Array<string>,
         maxPage: number,
+        readonly?: boolean,
         isLoading?: boolean,
         entityPropsAlias?: {[key : string] : string},
         hiddenProps?: Array<string>,
@@ -15,7 +16,7 @@
         add: [void],
         delete: [object],
         update: [object],
-        expand: [object],
+        expand: [{isExpanded: boolean, id:object}],
         changePage: [{newPage: number}]
     }>();
 
@@ -27,9 +28,12 @@
 </script>
 
 <template>
-    <v-container>
-        <v-row justify="center">
-            <v-col cols="9">
+    <v-container class="pa-0">
+        <v-row
+            v-if="!readonly"
+            justify="center"
+        >
+            <v-col>
                 <v-btn
                     @click.prevent="emit('add')"
                     :loading="isLoading"
@@ -45,13 +49,14 @@
             :key="getId(entity).toString()"
             justify="center"
         >
-            <v-col cols="9">
+            <v-col>
                 <entity-observer
                     @delete="emit('delete', getId(entity))"
                     @update="emit('update', getId(entity))"
-                    @expand="emit('expand', getId(entity))"
+                    @expand="emit('expand', {isExpanded: $event.isExpanded, id: getId(entity)})"
                     :entity="entity"
                     :entity-props-alias="entityPropsAlias"
+                    :readonly="readonly"
                     :hidden-props="hiddenProps"
                     :header-props="headerProps"
                     :is-loading="isLoading"     
@@ -60,7 +65,7 @@
         </v-row>
 
         <v-row justify="center">
-            <v-col cols="9">
+            <v-col>
                 <page-controller
                     @page-changed="emit('changePage', {newPage: $event.newPage})"
                     :start-page="1"

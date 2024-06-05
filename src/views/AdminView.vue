@@ -20,7 +20,7 @@
     ]);
 
     const isChildViewActive = () => {
-        return route.name === 'admin';
+        return route.name !== 'admin';
     }
 </script>
 
@@ -30,7 +30,7 @@
     />
 
     <v-card
-        v-if="isChildViewActive()"
+        v-if="!isChildViewActive()"
         class="ma-5 pa-5"
     >
         <v-card-title>

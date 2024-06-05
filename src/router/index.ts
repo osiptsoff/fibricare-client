@@ -1,9 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
-import AdminView from "../views/AdminView.vue";
-import DoctorView from "../views/DoctorView.vue";
 import LoginView from "../views/LoginView.vue";
-import AdminDoctorView from "../views/children/AdminDoctorView.vue";
-import AdminPatientView from "../views/children/AdminPatientView.vue";
+import adminRoutes from "./adminRoutes";
+import doctorRoutes from "./doctorRoutes";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -26,32 +24,8 @@ const router = createRouter({
             name: 'login',
             component: LoginView,
         },
-        {
-            path: '/admin',
-            name: 'admin',
-            component: AdminView,
-            meta: { forRole: 'admin' },
-            children: [
-                {
-                    path: 'doctor',
-                    name: 'admin-doctors',
-                    component: AdminDoctorView,
-                    meta: { forRole: 'admin' },
-                },
-                {
-                    path: 'patient',
-                    name: 'admin-patients',
-                    component: AdminPatientView,
-                    meta: { forRole: 'admin' },
-                }
-            ]
-        },
-        {
-            path: '/doctor',
-            name: 'doctor',
-            component: DoctorView,
-            meta: { forRole: 'doctor' },
-        }
+        adminRoutes,
+        doctorRoutes,
     ]
 });
 

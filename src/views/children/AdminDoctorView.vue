@@ -69,16 +69,20 @@
         </v-card>
     </v-dialog>
 
-    <entity-page-observer
-        @change-page="onGetPage($event.newPage)"
-        @add="onAdd"
-        @delete="onDelete($event.id)"
-        @update="onUpdate($event.id)"
-        :entities="page"
-        :max-page="totalPages"
-        :id-props="['id']"
-        :header-props="['name', 'birthDate']"
-        :entity-props-alias="alias"
-        :is-loading="isPageLoading"
-    />
+    <v-row justify="center" class="mt-2">
+        <v-col cols="8">
+            <entity-page-observer
+                @change-page="onGetPage($event.newPage)"
+                @add="onAdd"
+                @delete="onDelete($event.id)"
+                @update="onUpdate($event.id)"
+                :entities="page"
+                :max-page="totalPages"
+                :id-props="['id']"
+                :header-props="['name', 'birthDate']"
+                :entity-props-alias="alias"
+                :is-loading="isPageLoading"
+            />
+        </v-col>
+    </v-row>
 </template>

@@ -1,7 +1,7 @@
-import { AxiosError, AxiosInstance } from "axios";
-import Page from "../models/Page";
-import { ApiError } from "../api";
-import ErrorResolverChain from "../api/ErrorResolverChain";
+import { AxiosInstance } from "axios";
+import ErrorResolverChain from "../../api/ErrorResolverChain";
+import Page from "../../models/Page";
+import { pack, resolveError, unpack } from "./auxiliaryMethods";
 
 type Args<T> = {
     api: AxiosInstance,
@@ -17,29 +17,9 @@ type Args<T> = {
     unpackEntity?: (obj: any) => T,
 };
 
-const resolveError = (error: unknown, resolverChain?: ErrorResolverChain) => {
-    const err = error as AxiosError<ApiError>;
-
-    if(!resolverChain) {
-        return 'Unresolved';
-    }
-
-    return resolverChain.resolveError(err.response?.data);
-}
-
 const useCrud = <T>({api, endpoint, resolvers, packEntity, unpackEntity}: Args<T>) => {
-    const _packEntity = (obj: T) => {
-        if(packEntity) {
-            return packEntity(obj);
-        }
-        return obj;
-    }
-    const _unpackEntity = (obj: any) => {
-        if(unpackEntity) {
-            return unpackEntity(obj);
-        }
-        return obj as T;
-    }
+    const _packEntity = (obj: T) => <T>pack(obj, packEntity);
+    const _unpackEntity = (obj: T) => <T>unpack(obj, unpackEntity);
 
     const create = async (obj: T) => {
         try {

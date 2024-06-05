@@ -4,6 +4,7 @@
     const props = defineProps<{
         entity: object,
         entityPropsAlias?: {[key : string] : string},
+        readonly?: boolean,
         hiddenProps?: Array<string>,
         headerProps?: Array<string>,
         isLoading?: boolean,
@@ -89,6 +90,7 @@
             <v-row justify="center">
                 <v-col cols="1">
                     <v-btn
+                        v-if="!readonly"
                         @click.prevent="emit('delete')"
                         :loading="isLoading"
                         class="rounded"
@@ -108,7 +110,8 @@
                 </v-col>
 
                 <v-col cols=1>
-                    <v-btn 
+                    <v-btn
+                        v-if="!readonly"
                         @click.prevent="emit('update')"
                         :loading="isLoading"
                         class="rounded"

@@ -1,5 +1,5 @@
 import UserInfo from "./UserInfo";
-import { alias as infoAlias } from "./UserInfo";
+import { alias as infoAlias, fields as infoFields } from "./UserInfo";
 
 export default interface Doctor extends UserInfo {
     name: string;
@@ -15,14 +15,7 @@ export const alias = {
 };
 
 export const fields = [
-    {
-        fieldName: 'login',
-        fieldType: 'string' as const,
-    },
-    {
-        fieldName: 'password',
-        fieldType: 'string' as const,
-    },
+    ...infoFields,
     {
         fieldName: 'name',
         fieldType: 'string' as const,
