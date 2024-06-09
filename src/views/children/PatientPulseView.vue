@@ -48,40 +48,40 @@
                     :readonly="true"
                     :is-loading="isPageLoading"
                 />
-            <v-card
-                v-else
-                class="text-center"
-            >
-                <v-card-title>Нет данных об измерениях ЧСС этим пациентом</v-card-title>
-            </v-card>
+                <v-card
+                    v-if="page.length === 0 && !isPageLoading"
+                    class="text-center"
+                >
+                    <v-card-title>Нет данных об измерениях ЧСС этим пациентом</v-card-title>
+                </v-card>
             </v-col>
         </v-row>
 
         <v-row
             v-if="page.length > 1"
             justify="center"
-            class="mt-10"
+            class="mt-3"
         >
             <v-col>
                 <v-card>
-                <v-card-subtitle class="mt-2">
-                    Крайнее значение
-                </v-card-subtitle>
-                <v-card-title>
-                        {{ rates[rates.length - 1] }}
-                </v-card-title>
+                    <v-card-subtitle class="mt-2">
+                        Крайнее значение
+                    </v-card-subtitle>
+                    <v-card-title>
+                            {{ rates[rates.length - 1] }}
+                    </v-card-title>
 
-                <v-sparkline
-                    :gradient="['#f72047', '#ffd200', '#1feaea']"
-                    :line-width="1"
-                    :model-value="rates"
-                    :labels="graphLabels"
-                    :smooth="true"
-                    key="heartbeat-graph"
-                    padding="10"
-                    label-size="3"
-                    auto-draw
-                />
+                    <v-sparkline
+                        :gradient="['#f72047', '#ffd200', '#1feaea']"
+                        :line-width="1"
+                        :model-value="rates"
+                        :labels="graphLabels"
+                        :smooth="true"
+                        key="heartbeat-graph"
+                        padding="10"
+                        label-size="3"
+                        auto-draw
+                    />
                 </v-card>
             </v-col>
         </v-row>

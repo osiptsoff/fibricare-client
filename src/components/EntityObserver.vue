@@ -28,7 +28,22 @@
     const header = ref<string>();
     const objectToEntries = (obj: object) => {
         const allEntries = Object.entries(obj).map(
-            (e) => ({key: e[0], value: e[1] ? e[1].toString() : 'Отсутствует'})
+            (e) => {
+                let key = e[0];
+                let value = e[1];
+
+                if(value === true) {
+                    value = 'Да';
+                }
+                if(value === false) {
+                    value = 'Нет';
+                }
+                if(value === undefined) {
+                    value = 'Отсутствует';
+                }
+                
+                return {key, value: value.toString()}
+            }
         );
 
         entries.value = allEntries.filter(

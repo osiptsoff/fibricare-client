@@ -24,9 +24,7 @@ const useCrud = <T>({api, endpoint, resolvers, packEntity, unpackEntity}: Args<T
     const create = async (obj: T) => {
         try {
             const entity = _packEntity(obj);
-    
             const response = await api.post<T>(endpoint, entity);
-
             return _unpackEntity(response.data);
         } catch (error) {
             return resolveError(error, resolvers?.createResolver);

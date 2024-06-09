@@ -1,4 +1,4 @@
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import Page from "../models/Page";
 
 type Args<T> = {

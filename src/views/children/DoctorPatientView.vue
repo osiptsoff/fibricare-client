@@ -12,6 +12,7 @@
     const router = useRouter();
     const { initError, init } = withInit(+route.params.id);
 
+    const isMountFinished = ref<boolean>(false);
     const entries = ref( [
         {
             name: 'Шкала CHADS2-VASC',
@@ -70,7 +71,10 @@
         router.replace({name: 'doctor'})
     };
 
-    onMounted(async () => await init() );
+    onMounted(async () => {
+        await init();
+        isMountFinished.value = true;
+    } );
 </script>
 
 <template>
@@ -87,7 +91,7 @@
 
     <v-row
         v-else
-        class="mt-5 text-center"
+        class="mt-2 text-center"
         justify="center"
     >
         <v-col cols="8">
@@ -104,7 +108,10 @@
         </v-col>
     </v-row>
 
-    <v-row justify="center">
+    <v-row class="pa-0 mt-1"
+        v-if="isMountFinished"
+        justify="center"
+    >
         <v-col cols="8">
             <navigated-wrapper
         :menu-entries="entries"
