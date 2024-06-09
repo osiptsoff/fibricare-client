@@ -9,6 +9,7 @@ import PatientInrView from "../views/children/PatientInrView.vue";
 import PatientPressureView from "../views/children/PatientPressureView.vue";
 import PatientTopicView from "../views/children/PatientTopicView.vue";
 import PatientVisitView from "../views/children/PatientVisitView.vue";
+import PatientTreatmentsView from "../views/children/PatientTreatmentsView.vue";
 import PatientWeightView from "../views/children/PatientWeightView.vue";
 
 const doctorRoutes = {
@@ -81,6 +82,12 @@ const doctorRoutes = {
                     path: 'activity',
                     name: 'patient-activity',
                     component: PatientActivityView,
+                    meta: { forRole: 'doctor' }
+                },
+                {
+                    path: 'treatments',
+                    name: 'patient-treatments',
+                    component: PatientTreatmentsView,
                     meta: { forRole: 'doctor' }
                 },
             ]

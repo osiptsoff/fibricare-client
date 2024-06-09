@@ -65,6 +65,11 @@
             routeName: 'patient-activity',
             icon: 'mdi-run',
         },
+        {
+            name: 'Прием препаратов',
+            routeName: 'patient-treatments',
+            icon: 'mdi-medical-bag',
+        },
     ]);
 
     const onGoBack = () => {
